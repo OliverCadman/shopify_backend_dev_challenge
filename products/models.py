@@ -43,7 +43,7 @@ class Product(models.Model):
         max_length=2,
         choices=PaintType.choices,
     )
-    size = models.CharField(
+    size = models.IntegerField(
         max_length=2,
         choices=Size.choices,
     )
