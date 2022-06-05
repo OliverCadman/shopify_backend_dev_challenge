@@ -37,6 +37,7 @@ class Product(models.Model):
         ENCAUSTIC = "EC", _("Encaustic")
 
     sku = models.CharField(max_length=254)
+    name = models.CharField(max_length=254)
     brand = models.CharField(max_length=254)
     colour = models.CharField(max_length=254)
     paint_type = models.CharField(
@@ -44,10 +45,12 @@ class Product(models.Model):
         choices=PaintType.choices,
     )
     size = models.IntegerField(
-        max_length=2,
         choices=Size.choices,
     )
     cost_price = models.DecimalField(max_digits=6, decimal_places=2)
     retail_price = models.DecimalField(max_digits=6, decimal_places=2)
     inventory_count = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.name
 
