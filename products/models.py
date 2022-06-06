@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 import re
 
-# Create your models here.
+
 class Product(models.Model):
     """
     Define the Product table.
@@ -52,34 +52,45 @@ class Product(models.Model):
     retail_price = models.DecimalField(max_digits=6, decimal_places=2)
     inventory_count = models.IntegerField(default=0)
 
-    def get_brand_name(self): 
+    def get_brand_name_repr(self): 
         """
-        Create a brand name representation in SKU format.
-        
-        If more than one word is present in the string, 
-        extract the capital letters from each word and use
-        to create initials of words in SKU.
-
-        If one word, and larger than 3 characters, take the first
-        three characters. Otherwise, take the whole string.
-
-        Convert all characters to uppercase.
+        Return an SKU representation of the product's brand name.
         """
-        if len(self.brand.split()) > 1:
-            brand_initials = re.findall("[A-Z]+", self.brand.title())
-            if brand_initials:
-                return "".join(brand_initials)
-        elif len(self.brand) > 3:
-            return self.brand[:3].upper()
-        else:
-            return self.brand.upper()
+        return initialize_string(self.brand)
     
+    def get_color_repr(self):
+        """
+        Return an SKU representation of the product's colour.
+        """
+        return initialize_string(self.colour)
+    
+    def get_size_repr(self):
+        """
+        Return an SKU repesentation of the product's size.
+        """
+        return self.size
+    
+    def get_paint_type_repr(self):
+        """
+        Return an SKU representation of the product's paint type.
+        """
+        return self.paint_type
+
     def get_sku(self):
         """
-        Prepare SKU field.
+        Prepare full SKU field.
         """
-        return self.get_brand_name()
+        brand_name = self.get_brand_name_repr()
+
+        paint_type = self.get_paint_type_repr()
+
+        color = self.get_color_repr()
+
+        size = self.get_size_repr()
+
+        return f"{brand_name}-{color}-{paint_type}-{size}"
     
+
     def save(self, *args, **kwargs):
         """
         Customise save method to populate SKU field.
@@ -90,5 +101,30 @@ class Product(models.Model):
   
 
     def __str__(self):
+        """
+        Return string representation of product object.
+        """
         return self.name
 
+
+def initialize_string(string):
+    """
+    Create a field string representations in SKU format.
+        
+        If more than one word is present in the string, 
+        extract the capital letters from each word and use
+        to create initials of words in SKU.
+
+        If one word, and larger than 3 characters, take the first
+        three characters. Otherwise, take the whole string.
+
+        Convert all characters to uppercase.
+    """
+    if len(string.split()) > 1:
+        multiple_words = re.findall("[A-Z]+", string.title())
+        if multiple_words:
+            return "".join(multiple_words)
+    elif len(string) > 3:
+        return string[:3].upper()
+    else:
+        return string.upper()

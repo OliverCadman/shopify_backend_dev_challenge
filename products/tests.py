@@ -28,7 +28,7 @@ class TestProductModels(TestCase):
         self.assertEqual(test_product.__str__(), "test product")
         self.assertEqual(test_product.paint_type, "WC")
         self.assertEqual(test_product.size, 2)
-        self.assertEqual(test_product.sku, "TB")
+        self.assertEqual(test_product.sku, "TB-TC-WC-2")
         self.assertEqual(test_product.cost_price, 14.55)
         self.assertEqual(test_product.retail_price, 25.99)
         
@@ -48,7 +48,7 @@ class TestProductModels(TestCase):
             retail_price=25.99
         )
 
-        self.assertEqual(test_product.sku, "BRA")
+        self.assertEqual(test_product.sku, "BRA-TC-WC-2")
     
     def test_sku_created_with_multiple_words(self):
         """
@@ -65,4 +65,19 @@ class TestProductModels(TestCase):
             retail_price=25.99
         )
 
-        self.assertEqual(test_product.sku, "ATBFD")
+        self.assertEqual(test_product.sku, "ATBFD-TC-WC-2")
+    
+    def test_sku_created_with_single_word_containing_three_characters(self):
+        test_product = Product.objects.create(
+            name="test product",
+            brand="tes",
+            colour="test colour",
+            paint_type="WC",
+            size=2,
+            cost_price=14.55,
+            retail_price=25.99
+        )
+
+        self.assertEqual(test_product.sku, "TES-TC-WC-2")
+
+
