@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+import re
 
 # Create your models here.
 class Product(models.Model):
@@ -36,7 +37,7 @@ class Product(models.Model):
         PASTEL = "PS", _("Pastel")
         ENCAUSTIC = "EC", _("Encaustic")
 
-    sku = models.CharField(max_length=254)
+    sku = models.CharField(max_length=254, null=True, blank=True)
     name = models.CharField(max_length=254)
     brand = models.CharField(max_length=254)
     colour = models.CharField(max_length=254)
@@ -50,6 +51,43 @@ class Product(models.Model):
     cost_price = models.DecimalField(max_digits=6, decimal_places=2)
     retail_price = models.DecimalField(max_digits=6, decimal_places=2)
     inventory_count = models.IntegerField(default=0)
+
+    def get_brand_name(self): 
+        """
+        Create a brand name representation in SKU format.
+        
+        If more than one word is present in the string, 
+        extract the capital letters from each word and use
+        to create initials of words in SKU.
+
+        If one word, and larger than 3 characters, take the first
+        three characters. Otherwise, take the whole string.
+
+        Convert all characters to uppercase.
+        """
+        if len(self.brand.split()) > 1:
+            brand_initials = re.findall("[A-Z]+", self.brand.title())
+            if brand_initials:
+                return "".join(brand_initials)
+        elif len(self.brand) > 3:
+            return self.brand[:3].upper()
+        else:
+            return self.brand.upper()
+    
+    def get_sku(self):
+        """
+        Prepare SKU field.
+        """
+        return self.get_brand_name()
+    
+    def save(self, *args, **kwargs):
+        """
+        Customise save method to populate SKU field.
+        """
+        if not self.sku:
+            self.sku = self.get_sku()
+        super().save(*args, **kwargs)
+  
 
     def __str__(self):
         return self.name
