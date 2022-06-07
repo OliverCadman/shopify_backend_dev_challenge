@@ -8,10 +8,16 @@
 
 {% block content %}
     <h1>Add A Product</h1>
-    <p></p>
-     <form method="post" action="" id="add_product" class="primary-font">
+    <section id="form-section">
+        <div class="form-details">
+            <p>
+                Please include these details when submitting a new paint product in stock:
+            </p> 
+        </div>
+        <form method="post" action="" id="add_product" class="primary-font">
        {% csrf_token %}
        {{ form|crispy }}
        <button type="submit" value="Submit" class="btn bg-success text-light w-100">Submit</button>
    </form>
+    </section>
 {% endblock %}
