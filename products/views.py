@@ -5,5 +5,13 @@ from .models import Product
 
 class AddProduct(CreateView):
     model = Product
-    fields = ["name"]
+    fields = [
+        'name',
+        'brand',
+        'size',
+        'colour',
+        'paint_type',
+        'cost_price',
+        'retail_price'
+    ]
 
