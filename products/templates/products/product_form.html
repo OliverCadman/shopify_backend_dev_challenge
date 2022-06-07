@@ -8,16 +8,48 @@
 
 {% block content %}
     <h1>Add A Product</h1>
-    <section id="form-section">
-        <div class="form-details">
-            <p>
-                Please include these details when submitting a new paint product in stock:
-            </p> 
-        </div>
-        <form method="post" action="" id="add_product" class="primary-font">
+        <form method="post" action="{% url "add_product" %}" id="add_product" class="primary-font">
        {% csrf_token %}
-       {{ form|crispy }}
+       <div class="container-fluid">
+           <div class="row">
+               <div class="col-12">
+                    {{ form.name|as_crispy_field }}
+               </div>
+               <div class="col-12">
+                    {{ form.brand|as_crispy_field }}
+               </div>
+               <div class="col-12">
+                    {{ form.colour|as_crispy_field }}
+               </div>
+           </div>
+           <div class="row">
+               <div class="col-6">
+                   {{ form.paint_type|as_crispy_field }}
+               </div>
+               <div class="col-6">
+                   {{ form.size|as_crispy_field }}
+               </div>
+               <div class="col-6">
+                   {{ form.cost_price|as_crispy_field }}
+               </div>
+               <div class="col-6">
+                   {{ form.retail_price|as_crispy_field }}
+               </div>
+           </div>
+           <div class="row">
+               <div class="col-12">
+                   {{ form.inventory_count|as_crispy_field }}
+               </div>
+           </div>
+       </div>
+       {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+
+                    <strong>{{ field }}: {{ error|escape }}</strong>
+                {% endfor %}
+            {% endfor %}
+       {% endif %}
        <button type="submit" value="Submit" class="btn bg-success text-light w-100">Submit</button>
    </form>
-    </section>
 {% endblock %}
