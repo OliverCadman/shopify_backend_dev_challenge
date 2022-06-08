@@ -1,6 +1,9 @@
+from distutils.log import error
 from .models import Product
 from django import forms
 from django.forms import ValidationError
+from crispy_forms.layout import Layout
+from crispy_forms.helper import FormHelper
 
 
 class ProductForm(forms.ModelForm):
@@ -34,13 +37,17 @@ class ProductForm(forms.ModelForm):
             if field != "paint_type" and field != "size" and field != "inventory_count":
                 placeholder = f"{placeholders[field]}"
                 self.fields[field].widget.attrs["placeholder"] = placeholder
+
     
     def clean(self):
         inventory_count = self.cleaned_data.get("inventory_count")
         if inventory_count == 0:
-            raise ValidationError(
+            error_message = (
                 "No amount of inventory units specified."
                 " Please enter the amount of units to add.")
+            field = "inventory_count"
+            self.add_error(field, error_message)
+            raise ValidationError(error_message)
         return self.cleaned_data
 
         

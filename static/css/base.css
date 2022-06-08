@@ -57,7 +57,6 @@ Variables
 }
 
 main {
-    min-height: 100vh;
     display: grid;
     place-items: center;
 }
@@ -75,4 +74,8 @@ main {
     color: var(--clr-white);
     font-family: var(--ff-primary);
     letter-spacing: 0.1rem;
+}
+
+.primary-font {
+    font-family: var(--ff-primary);
 }
