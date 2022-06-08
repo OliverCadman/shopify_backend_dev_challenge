@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # Custom Apps
     'products',
+    'shipments',
 
     # Crispy Forms
     'crispy_forms',
