@@ -20,5 +20,7 @@ class ProductListView(ListView):
     model = Product
     template_name = "products/product_list.html"
 
+    paginate_by = 10
+
 product_list_view = login_required(ProductListView.as_view())
 
