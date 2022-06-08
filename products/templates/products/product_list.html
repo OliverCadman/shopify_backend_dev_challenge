@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="pagination">
+<div class="pagination w-100 bg-light p-4 d-flex justify-content-center">
     <span class="step-links">
         {% if page_obj.has_previous %}
             <a href="?page=1">&laquo; first</a>
@@ -46,6 +46,15 @@
                     <th>
                         Retail Price
                     </th>
+                    <th>
+                        Inventory Count
+                    </th>
+                    <th>
+                        Edit
+                    </th>
+                    <th>
+                       Delete
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -74,6 +83,12 @@
                         </td>
                         <td>
                             {{ item.retail_price }}
+                        </td>
+                        <td>
+                            {{ item.inventory_count }}
+                        </td>
+                        <td>
+                            <a href="{% url 'edit_product' item.pk %}">Edit</a>
                         </td>
                     </tr>
                 {% endfor %}

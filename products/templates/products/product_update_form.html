@@ -1,14 +1,8 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-{% load static %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'products/css/add_product.css' %}">
-{% endblock %}
 
 {% block content %}
-    <h1>Add A Product</h1>
-        <form method="post" action="{% url "add_product" %}" id="add_product" class="primary-font">
+    <form method="post" action="{% url "edit_product" object.pk  %}" id="add_product" class="primary-font">
        {% csrf_token %}
        {% include 'includes/form.html'%}
        <button type="submit" value="Submit" class="btn bg-success text-light w-100">Submit</button>
