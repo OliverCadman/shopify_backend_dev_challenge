@@ -1,12 +1,13 @@
+from venv import create
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
 from .views import AddProductView
 
-from .test_utils import get_test_form_data
+from .test_utils import get_test_form_data, create_test_user
 
-class TestProductViews(TestCase):
+class TestAddProductView(TestCase):
 
     def setUp(self):
         """
@@ -16,11 +17,7 @@ class TestProductViews(TestCase):
         password = "test password"
         email = "test@email.com"
 
-        user = get_user_model().objects.create_user(
-            username=username,
-            password=password,
-            email=email
-        )
+        user = create_test_user(username, password, email)
 
         logged_in = self.client.login(username=username, password=password)
         self.assertTrue(logged_in)
@@ -58,3 +55,4 @@ class TestProductViews(TestCase):
         self.assertRedirects(
             response, self.product_list_url,
             status_code=302, target_status_code=200)
+
