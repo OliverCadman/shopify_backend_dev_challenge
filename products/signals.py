@@ -14,6 +14,7 @@ def update_product_quantity(sender, instance, created, **kwargs):
     """
 
     if created:
+        line_item = instance
         product_id = instance.pk
 
         # Retrieve the quantity of items in the ShipmentLineItem
@@ -22,8 +23,9 @@ def update_product_quantity(sender, instance, created, **kwargs):
 
         # Deduct ShipmentLineItem quantity from Product's inventory count
         # and update the inventory_count field in Product object.
-        updated_inventory_count = current_product.inventory_count - product_quantity
-        current_product.inventory_count = updated_inventory_count
+        current_product.inventory_count -= product_quantity
         current_product.save()
+
+        line_item.shipment.update_total()
 
         
