@@ -1,3 +1,4 @@
+from cgi import test
 from django.test import TestCase
 from .models import Shipment, ShipmentLineItem
 from products.models import Product
@@ -64,14 +65,56 @@ class ShipmentModelTest(TestCase):
             quantity=10,
         )
 
+    def test_calculate_cost_price_total(self):
+        """
+        Confirm the ShipmentLineItems calculate_costprice_total method
+        returns the correct value.
+        """
 
-    def test_shipment_line_items_added_and_total_updated(self):
+        # Calculate control cost_price
+        total_cost_control = calculate_test_total(
+            self.shipment_line_item1.product.cost_price,
+            self.shipment_line_item1.quantity)
+            
+        # Invoke calculate_costprice_total method of ShipmentLineItem object
+        total_cost_test = round(
+            self.shipment_line_item1.calculate_costprice_total(), 2)
 
-        self.test_shipment.update_total()
-        print("TEST SHIPMENT", self.test_shipment.order_total_retail)
-        print("TEST SHIPMENT", self.test_shipment.grand_total_retail)
-        print("TEST SHIPMENT", self.test_shipment.order_total_cost)
+        # Confirm the control and test calculations match.
+        self.assertEqual(total_cost_control, total_cost_test)
+    
+    def test_calculate_retail_price_total(self):
+        """
+        Confirm the ShipmentLineItems calculate_retailprice_total method
+        returns the correct value.
+        """
 
-        self.assertEqual(len(self.test_shipment.line_items.all()), 2)
+        total_retail_control = calculate_test_total(
+            self.shipment_line_item1.product.retail_price,
+            self.shipment_line_item1.quantity
+        )
 
+        total_retail_test = round(
+            self.shipment_line_item1.calculate_retailprice_total(), 2)
         
+        self.assertEqual(total_retail_control, total_retail_test)
+
+    def test_shipment_line_items_added(self):
+        """
+        Confirm that the line items are added to the to the shipment
+        object.
+        """
+        self.assertEqual(len(self.test_shipment.line_items.all()), 2) 
+    
+    def test_product_inventory_count_deducted(self):
+        """
+        Confirm that the Product object's inventory count is deducted
+        by the quantity specified in the creation of a ShipmentLineItem object.
+
+        Original Inventory Count of self.test_product1 object = 50
+        Quantity of self.test_product1 added to ShipLineItem = 10
+
+        50 - 10 = 40
+        """
+        test_product = Product.objects.get(pk=self.test_product1.pk)
+        self.assertEqual(test_product.inventory_count, 40)
