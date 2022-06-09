@@ -22,12 +22,14 @@ class Product(models.Model):
         - inventory_count (IntegerField) - The current amount of units in stock (defaults to 0).
     """
 
+
     class Size(models.IntegerChoices):
         EXTRA_SMALL = 1, _("8ml")
         SMALL = 2, _("15ml")
         MEDIUM = 3, _("30ml")
         LARGE = 4, _("50ml")
         EXTRA_LARGE = 5, _("75ml")
+
 
     class PaintType(models.TextChoices):
         OIL = "OL", _("Oil")
@@ -36,6 +38,7 @@ class Product(models.Model):
         GOUACHE = "GC", _("Gouache")
         PASTEL = "PS", _("Pastel")
         ENCAUSTIC = "EC", _("Encaustic")
+
 
     sku = models.CharField(max_length=254, null=True, blank=True)
     name = models.CharField(max_length=254)
@@ -51,6 +54,7 @@ class Product(models.Model):
     cost_price = models.DecimalField(max_digits=6, decimal_places=2)
     retail_price = models.DecimalField(max_digits=6, decimal_places=2)
     inventory_count = models.IntegerField(default=0)
+
 
     def get_brand_name_repr(self): 
         """
@@ -107,6 +111,7 @@ class Product(models.Model):
         return self.name
 
 
+
 def initialize_string(string):
     """
     Create a field string representations in SKU format.
@@ -128,3 +133,6 @@ def initialize_string(string):
         return string[:3].upper()
     else:
         return string.upper()
+    
+
+

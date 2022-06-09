@@ -1,0 +1,32 @@
+<div class="container-fluid">
+           <div class="row">
+               <div class="col-12">
+                    {{ form.name|as_crispy_field }}
+               </div>
+               <div class="col-12">
+                    {{ form.brand|as_crispy_field }}
+               </div>
+               <div class="col-12">
+                    {{ form.colour|as_crispy_field }}
+               </div>
+           </div>
+           <div class="row">
+               <div class="col-6">
+                   {{ form.paint_type|as_crispy_field }}
+               </div>
+               <div class="col-6">
+                   {{ form.size|as_crispy_field }}
+               </div>
+               <div class="col-6">
+                   {{ form.cost_price|as_crispy_field }}
+               </div>
+               <div class="col-6">
+                   {{ form.retail_price|as_crispy_field }}
+               </div>
+           </div>
+           <div class="row">
+               <div class="col-12">
+                   {{ form.inventory_count|as_crispy_field }}
+               </div>
+           </div>
+       </div>

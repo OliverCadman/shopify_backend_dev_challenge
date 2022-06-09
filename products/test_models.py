@@ -80,4 +80,18 @@ class TestProductModels(TestCase):
 
         self.assertEqual(test_product.sku, "TES-TC-WC-2")
 
+    
+    def test_product_creation_with_numbers(self):
+        test_product = Product.objects.create(
+            name="1",
+            brand="2",
+            colour="3",
+            paint_type="4",
+            size=2,
+            cost_price=14.55,
+            retail_price=25.99
+        )
+        print(test_product.sku)
+        self.assertEqual(len(Product.objects.all()), 1)
+
 

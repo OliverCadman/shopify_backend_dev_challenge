@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <form method="post" action="{% url "edit_product" object.pk  %}" id="add_product" class="primary-font">
+       {% csrf_token %}
+       {% include 'includes/form.html'%}
+       <button type="submit" value="Submit" class="btn bg-success text-light w-100">Submit</button>
+   </form>
+{% endblock %}

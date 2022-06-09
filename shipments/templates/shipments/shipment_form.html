@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+        <h1>
+            Create a Shipment
+        </h1>
+        <form action="" class="form">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                            {{ form.recipient_name|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                            {{ form.email|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                            {{ form.phone_number|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        {{ form.street_address1|as_crispy_field }}
+                    </div>
+                    <div class="col-12">
+                        {{ form.street_address2|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.county|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.postcode|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        {{ form.country|as_crispy_field }}
+                    </div>
+                </div>
+                <button type="submit" value="Submit" class="btn bg-success text-light w-100">Submit</button>
+            </div>
+        </form>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="pagination w-100 bg-light p-4 d-flex justify-content-center">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+    <section>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        SKU
+                    </th>
+                    <th>
+                        Brand
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Colour
+                    </th>
+                    <th>
+                        Paint Type
+                    </th>
+                    <th>
+                        Size
+                    </th>
+                    <th>
+                        Cost Price
+                    </th>
+                    <th>
+                        Retail Price
+                    </th>
+                    <th>
+                        Inventory Count
+                    </th>
+                    <th>
+                        Edit
+                    </th>
+                    <th>
+                       Delete
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in object_list %}
+                    <tr>
+                        <td>
+                            {{ item.sku }}
+                        </td>
+                        <td>
+                            {{ item.brand }}
+                        </td>
+                        <td>
+                            {{ item.name }}
+                        </td>
+                        <td>
+                            {{ item.colour }}
+                        </td>
+                        <td>
+                            {{ item.get_paint_type_display }}
+                        </td>
+                        <td>
+                            {{ item.get_size_display }}
+                        </td>
+                        <td>
+                            {{ item.cost_price }}
+                        </td>
+                        <td>
+                            {{ item.retail_price }}
+                        </td>
+                        <td>
+                            {{ item.inventory_count }}
+                        </td>
+                        <td>
+                            <a href="{% url 'edit_product' item.pk %}">Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}
