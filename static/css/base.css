@@ -79,3 +79,11 @@ main {
 .primary-font {
     font-family: var(--ff-primary);
 }
+
+form {
+    background: #f1f1f1;
+    padding: 2rem 1rem;
+    border-radius: 20px;
+    margin-right: 2rem;
+    width: 50%;
+}
