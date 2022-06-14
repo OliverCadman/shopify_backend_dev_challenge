@@ -6,77 +6,98 @@
 {% endblock %}
 
 {% block content %}
-<h1>
-    Create a Shipment
-</h1>
-    <div class="grid-2">
-        <div class="form_container">
-            <form action="">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12">
-                                {{ form.recipient_name|as_crispy_field }}
+<section class="mt-3">
+    <h1>
+        Create a Shipment
+    </h1>
+        <div class="grid-2">
+            <div class="form_container">
+                <form action="{% url "create_shipment" %}" method="POST" class="shipment_form">
+                    {% csrf_token %}
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                    {{ form.recipient_name|as_crispy_field }}
+                            </div>
+                            <div class="col-6">
+                                    {{ form.email|as_crispy_field }}
+                            </div>
+                            <div class="col-6">
+                                    {{ form.phone_number|as_crispy_field }}
+                            </div>
                         </div>
-                        <div class="col-6">
-                                {{ form.email|as_crispy_field }}
+                        <div class="row">
+                            <div class="col-12">
+                                {{ form.street_address1|as_crispy_field }}
+                            </div>
+                            <div class="col-12">
+                                {{ form.street_address2|as_crispy_field }}
+                            </div>
+                            <div class="col-12">
+                                {{ form.town_or_city|as_crispy_field }}
+                            </div>
+                            <div class="col-6">
+                                {{ form.county|as_crispy_field }}
+                            </div>
+                            <div class="col-6">
+                                {{ form.postcode|as_crispy_field }}
+                            </div>
                         </div>
-                        <div class="col-6">
-                                {{ form.phone_number|as_crispy_field }}
+                        <div class="row">
+                            <div class="col-12">
+                                {{ form.country|as_crispy_field }}
+                            </div>
                         </div>
+                        <button type="submit" value="Submit" class="btn bg-success text-light w-100">Submit</button>
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            {{ form.street_address1|as_crispy_field }}
-                        </div>
-                        <div class="col-12">
-                            {{ form.street_address2|as_crispy_field }}
-                        </div>
-                        <div class="col-6">
-                            {{ form.county|as_crispy_field }}
-                        </div>
-                        <div class="col-6">
-                            {{ form.postcode|as_crispy_field }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            {{ form.country|as_crispy_field }}
-                        </div>
-                    </div>
-                    <button type="submit" value="Submit" class="btn bg-success text-light w-100">Submit</button>
-                </div>
-            </form>
-        </div>
-        <div class="products_container">
-             <div class="products">
-                <!-- Insert Added Products Here -->
+                </form>
             </div>
-            {% for product in products %}
-                <div class="product-wrapper">
-                    <div class="product-detail">
-                        <h4>
-                            {{ product.name}}
-                        </h4>
-                        
-                        <p>
-                            {{ product.brand }}
-                        </p>
-                        <span>
-                            ({{ product.inventory_count }} units)
-                        </span>
-                    </div>
-                    <div class="product-form">
-                        <form action="{% url 'add_to_shipment' product.pk %}" method="POST">
-                            {% csrf_token %}
-
-                            <input type="number" id="quantity" name="quantity_{{product.pk}}">
-                            <button type="submit" class="btn btn-success">Submit</button>
-                        </form>
-                    </div>
+            <div class="added-products">
+                <h4 class="text-center">Products Added to Shipment</h4>
+                 <div class="products">
+                    <!-- Insert Added Products Here -->
+                    {% if added_products %}
+                        {% for bag in added_products %}
+                        <div class="product-detail">
+                            <p>Name: {{ bag.product.name }}</p>
+                            <p>Quantity: {{ bag.quantity }}</p>
+                            <p>Brand: {{ bag.product.brand }}</p>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                            <h5 class="text-center">No Products Added</h5>
+                    {% endif %}
                 </div>
-            {% endfor %}
+            </div>
+            <div class="product-container">
+                {% for product in products %}
+                    <div class="product-wrapper">
+                        <div>
+                            <h4>
+                                {{ product.name}}
+                            </h4>
+                            
+                            <p>
+                                {{ product.brand }}
+                            </p>
+                            <span>
+                                ({{ product.inventory_count }} units)
+                            </span>
+                        </div>
+                        <div class="product-form">
+                            <form action="{% url 'add_to_shipment' product.pk %}" method="POST">
+                                {% csrf_token %}
+    
+                                <input type="number" id="quantity" name="quantity_{{product.pk}}">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            </div>
         </div>
-    </div>
+</section>
 {% endblock %}
 
 {% block postload_js %}
