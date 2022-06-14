@@ -8,6 +8,13 @@ from .test_utils import calculate_test_total
 class ShipmentModelTest(TestCase):
 
     def setUp(self):
+        """
+        Create Shipment object, along with Product and ShipmentLineItem
+        objects to use as related objects.
+        """
+
+
+        # Create shipment
         self.test_shipment = Shipment.objects.create(
             recipient_name="test name",
             email="test@email.com",
@@ -20,6 +27,7 @@ class ShipmentModelTest(TestCase):
             status=1
         )
 
+        # Confirm that all appropriate fields are added successfully.
         self.assertEqual(len(Shipment.objects.all()), 1)
         self.assertEqual(self.test_shipment.recipient_name, "test name")
         self.assertEqual(self.test_shipment.email, "test@email.com")
@@ -31,6 +39,7 @@ class ShipmentModelTest(TestCase):
         self.assertEqual(self.test_shipment.county, "test county")
         self.assertEqual(self.test_shipment.status, 1)
 
+        # Create Test Products
         self.test_product1 = Product.objects.create(
             name="test product 1",
             brand="test brand 1",
@@ -53,6 +62,7 @@ class ShipmentModelTest(TestCase):
             inventory_count=50
         )
 
+        # Create test ShipmentLineItems
         self.shipment_line_item1 = ShipmentLineItem.objects.create(
             shipment=self.test_shipment,
             product=self.test_product1,
@@ -64,6 +74,12 @@ class ShipmentModelTest(TestCase):
             product=self.test_product2,
             quantity=10,
         )
+
+        # Decrement test_product's inventory count by quantity specified in 
+        # shipment_line_item creation
+        self.test_product1.decrement_inventory_count(self.shipment_line_item1.quantity)
+
+        self.test_product2.decrement_inventory_count(self.shipment_line_item2.quantity)
 
     def test_calculate_cost_price_total(self):
         """
@@ -116,5 +132,7 @@ class ShipmentModelTest(TestCase):
 
         50 - 10 = 40
         """
-        test_product = Product.objects.get(pk=self.test_product1.pk)
-        self.assertEqual(test_product.inventory_count, 40)
+        test_product1 = Product.objects.get(pk=self.test_product1.pk)
+        test_product2 = Product.objects.get(pk=self.test_product2.pk)
+        self.assertEqual(test_product1.inventory_count, 40)
+        self.assertEqual(test_product2.inventory_count, 40)
