@@ -7,10 +7,12 @@
 {% endblock %}
 
 {% block content %}
+<div class="centered">
     <h1>Add A Product</h1>
         <form method="post" action="{% url "add_product" %}" id="add_product" class="primary-font">
        {% csrf_token %}
        {% include 'includes/form.html'%}
        <button type="submit" value="Submit" class="btn bg-success text-light w-100">Submit</button>
    </form>
+</div>
 {% endblock %}
