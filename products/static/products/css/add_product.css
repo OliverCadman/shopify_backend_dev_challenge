@@ -2,14 +2,6 @@ h1 {
     margin: 1rem 0 0 1rem;
 }
 
-form {
-    background: #f1f1f1;
-    padding: 2rem 1rem;
-    border-radius: 20px;
-    margin-right: 2rem;
-    width: 50%;
-}
-
 .control-group {
     margin: 1rem 0;
 }

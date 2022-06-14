@@ -56,9 +56,14 @@ Variables
 
 }
 
-main {
+.centered {
     display: grid;
     place-items: center;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
 .navbar {
@@ -80,10 +85,31 @@ main {
     font-family: var(--ff-primary);
 }
 
-form {
+.product_form,
+.shipment_form {
     background: #f1f1f1;
     padding: 2rem 1rem;
     border-radius: 20px;
     margin-right: 2rem;
-    width: 50%;
+    /* width: 50%; */
+}
+
+.message-container {
+    position: fixed;
+    top: 72px;
+    right: 15px;
+    z-index: 9999999999;
+}
+
+/* .custom-toast {
+    overflow: visible;
+}
+
+.toast-capper {
+    height: 3px;
+} */
+
+.products_container {
+    height: 554px;
+    overflow: scroll;
 }
