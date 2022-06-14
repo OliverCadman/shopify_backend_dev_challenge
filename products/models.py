@@ -94,6 +94,13 @@ class Product(models.Model):
 
         return f"{brand_name}-{color}-{paint_type}-{size}"
     
+    def decrement_inventory_count(self, quantity):
+        print("DECREMENTING INVENTORY COUNT...")
+        if self.inventory_count > 0 or self.inventory_count > quantity:
+            self.inventory_count -= quantity
+            self.save()
+        else:
+            return None
 
     def save(self, *args, **kwargs):
         """
